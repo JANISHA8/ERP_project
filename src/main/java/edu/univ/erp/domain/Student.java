@@ -1,9 +1,9 @@
-import java.util.HashMap;
+import java.util.List;
 import java.time.LocalDate;
 
 public class Student
 {
-    private int unique_id;
+    private int user_id;
     private int roll_no;
     private String name;
     private String gender;
@@ -16,14 +16,14 @@ public class Student
     private int current_year;
     private int current_sem;
     private int graduation_year;
-    private HashMap<Integer,String[]> courses; //sem wise courses
+    private List<Course> courses; //sem wise courses
 
     // constructor
-    Student(int unique_id, int roll_no, String name, String gender, long contact_no, LocalDate dob, String nationality,
+    Student(int user_id, int roll_no, String name, String gender, long contact_no, LocalDate dob, String nationality,
                 String email_id, String program, String branch, int current_year, int current_sem, int graduation_year,
-                    HashMap<Integer,String[]> courses)
+                    List<Course> courses)
     {
-        this.unique_id = unique_id;
+        this.user_id = user_id;
         this.roll_no = roll_no;
         this.name = name;
         this.gender = gender;

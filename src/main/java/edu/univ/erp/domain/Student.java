@@ -40,6 +40,33 @@ public class Student
     }
 
     // getters
-
+    public String getUser_id() { return user_id; }
+    public int getRoll_no() { return roll_no; }
+    public String getName() { return name; }
+    public String getGender() { return gender; }
+    public long getContact_no() { return contact_no; }
+    public LocalDate getDob() { return dob; }
+    public String getNationality() { return nationality; }
+    public String getEmail_id() { return email_id; }
+    public String getProgram() { return program; }
+    public String getBranch() { return branch; }
+    public int getCurrent_year() { return current_year; }
+    public int getCurrent_sem() { return current_sem; }
+    public int getGraduation_year() { return graduation_year; }
+    public List<Course> getCourses() { return courses; }
     // setters
+    public void setUser_id(String user_id) { this.user_id = user_id; }
+    public void setRoll_no(int roll_no) { this.roll_no = roll_no; }
+    public void setName(String name) { this.name = name; }
+    public void setGender(String gender) { this.gender = gender; }
+    public void setContact_no(long contact_no) { this.contact_no = contact_no; }
+    public void setDob(LocalDate dob) { this.dob = dob; }
+    public void setNationality(String nationality) { this.nationality = nationality; }
+    public void setEmail_id(String email_id) { this.email_id = email_id; }
+    public void setProgram(String program) { this.program = program; }
+    public void setBranch(String branch) { this.branch = branch; }
+    public void setCurrent_year(int current_year) { this.current_year = current_year; }
+    public void setCurrent_sem(int current_sem) { this.current_sem = current_sem; }
+    public void setGraduation_year(int graduation_year) { this.graduation_year = graduation_year; }
+    public void setCourses(List<Course> courses) { this.courses = courses; }
 }

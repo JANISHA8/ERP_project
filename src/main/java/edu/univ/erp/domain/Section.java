@@ -54,6 +54,19 @@ public class Section
     }
 
     // getters
-
+    public String getCourse_id() { return course_id; }
+    public String getInstructor_id() { return instructor_id; }
+    public Day_Time getDay_time() { return day_time; }
+    public String getRoom() { return room; }
+    public int getCapacity() { return capacity; }
+    public int getSemester() { return semester; }
+    public int getYear() { return year; }
     // setters
+    public void setCourse_id(String course_id) { this.course_id = course_id; }
+    public void setInstructor_id(String instructor_id) { this.instructor_id = instructor_id; }
+    public void setDay_time(Day_Time day_time) { this.day_time = day_time; }
+    public void setRoom(String room) { this.room = room; }
+    public void setCapacity(int capacity) { this.capacity = capacity; }
+    public void setSemester(int semester) { this.semester = semester; }
+    public void setYear(int year) { this.year = year;}
 }

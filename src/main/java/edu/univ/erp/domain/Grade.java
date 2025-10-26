@@ -15,6 +15,13 @@ public class Grade
     }
 
     // getters
-
+    public String getEnrollment_id(){return enrollment_id;}
+    public String getComponent(){return component;}
+    public double getScore(){return score;}
+    public String getFinalgrade(){return final_grade;}
     // setters
-}
+    public void setEnrollment_id(String enrollment_id) { this.enrollment_id = enrollment_id; }
+    public void setComponent(String component) { this.component = component; }
+    public void setScore(double score) { this.score = score; }
+    public void setFinal_grade(String final_grade) { this.final_grade = final_grade; }
+}  

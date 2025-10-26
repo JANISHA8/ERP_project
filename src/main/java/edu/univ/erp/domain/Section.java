@@ -1,7 +1,6 @@
-import java.util.HashMap;
 import java.time.*;
 
-public class Day_Time
+class Day_Time
 {
     private String day;
     private LocalTime startTime;
@@ -17,31 +16,19 @@ public class Day_Time
 
     // getters
     public String getDay()
-    {
-        return day;
-    }
+    { return day; }
     public LocalTime getStartTime()
-    {
-        return startTime;
-    }
+    { return startTime; }
     public Duration getDuration()
-    {
-        return duration;
-    }
+    { return duration; }
 
     // setters
     public void setDay(String day)
-    {
-        this.day = day;
-    }
-     public void setStartTime(LocalTime startTime)
-    {
-        this.startTime = startTime;
-    }
+    { this.day = day; }
+    public void setStartTime(LocalTime startTime)
+    { this.startTime = startTime; }
     public void setDuration(Duration duration)
-    {
-        this.duration = duration;
-    }
+    { this.duration = duration; }
 }
 
 public class Section
@@ -51,6 +38,22 @@ public class Section
     private Day_Time day_time; // <day, start_time, duration>
     private String room;
     private int capacity;
-    private int semester;
-    private 
+    private int semester; // monsoon, winter, summer
+    private int year; // 2025, 2026
+
+    // constructor
+    Section(String course_id, String instructor_id, Day_Time day_time, String room, int capacity, int semester, int year)
+    {
+        this.course_id = course_id;
+        this.instructor_id = instructor_id;
+        this.day_time = day_time;
+        this.room = room;
+        this.capacity = capacity;
+        this.semester = semester;
+        this.year = year;
+    }
+
+    // getters
+
+    // setters
 }

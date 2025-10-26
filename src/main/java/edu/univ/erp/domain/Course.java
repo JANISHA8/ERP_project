@@ -3,6 +3,7 @@ public class Course
     private String code;
     private String title;
     private int credits;
+    // total no. of students enrolled
 
     // constructor
     Course(String code, String title, int credits)

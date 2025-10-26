@@ -3,7 +3,7 @@ import java.time.LocalDate;
 
 public class Instructor
 {
-    private int user_id;
+    private String user_id;
     private String name;
     private String gender;
     private long contact_no;
@@ -14,7 +14,7 @@ public class Instructor
     private List<Course> courses; //sem wise courses
 
     // constructor
-    Instructor(int user_id, String name, String gender, long contact_no, LocalDate dob, String nationality, String department,
+    Instructor(String user_id, String name, String gender, long contact_no, LocalDate dob, String nationality, String department,
                     String email_id, List<Course> courses)
     {
         this.user_id = user_id;

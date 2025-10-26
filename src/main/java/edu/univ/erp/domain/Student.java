@@ -3,7 +3,7 @@ import java.time.LocalDate;
 
 public class Student
 {
-    private int user_id;
+    private String user_id;
     private int roll_no;
     private String name;
     private String gender;
@@ -19,7 +19,7 @@ public class Student
     private List<Course> courses; //sem wise courses
 
     // constructor
-    Student(int user_id, int roll_no, String name, String gender, long contact_no, LocalDate dob, String nationality,
+    Student(String user_id, int roll_no, String name, String gender, long contact_no, LocalDate dob, String nationality,
                 String email_id, String program, String branch, int current_year, int current_sem, int graduation_year,
                     List<Course> courses)
     {
@@ -42,7 +42,4 @@ public class Student
     // getters
 
     // setters
-
-
-    
 }

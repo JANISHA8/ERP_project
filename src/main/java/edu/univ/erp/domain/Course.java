@@ -17,6 +17,7 @@ public class Course
     public String getCode() { return code; }
     public String getTitle() { return title; }
     public int getCredits() { return credits; }
+
     // setters
     public void setCode(String code) { this.code = code; }
     public void setTitle(String title) { this.title = title;}

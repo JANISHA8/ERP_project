@@ -61,6 +61,7 @@ public class Section
     public int getCapacity() { return capacity; }
     public int getSemester() { return semester; }
     public int getYear() { return year; }
+
     // setters
     public void setCourse_id(String course_id) { this.course_id = course_id; }
     public void setInstructor_id(String instructor_id) { this.instructor_id = instructor_id; }

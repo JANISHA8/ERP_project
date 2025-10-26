@@ -38,6 +38,7 @@ public class Instructor
     public String getDepartment() { return department; }
     public String getEmail_id() { return email_id; }
     public List<Course> getCourses() { return courses; }
+
     // setters
     public void setUser_id(String user_id) { this.user_id = user_id; }
     public void setName(String name) { this.name = name; }

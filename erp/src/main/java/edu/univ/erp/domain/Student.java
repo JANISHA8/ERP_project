@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class Student
 {
-    private String user_id;
+    private int user_id;
     private int roll_no;
     private String name;
     private String gender;
@@ -19,11 +19,12 @@ public class Student
     private int current_sem;
     private int graduation_year;
     private List<Course> courses; //sem wise courses
+    private Role role = Role.STUDENT;
 
     // constructor
-    Student(String user_id, int roll_no, String name, String gender, long contact_no, LocalDate dob, String nationality,
+    Student(int user_id, int roll_no, String name, String gender, long contact_no, LocalDate dob, String nationality,
                 String email_id, String program, String branch, int current_year, int current_sem, int graduation_year,
-                    List<Course> courses)
+                    List<Course> courses, Role role)
     {
         this.user_id = user_id;
         this.roll_no = roll_no;
@@ -39,10 +40,11 @@ public class Student
         this.current_sem = current_sem;
         this.graduation_year = graduation_year;
         this.courses = courses;
+        this.role = role;
     }
 
     // getters
-    public String getUser_id() { return user_id; }
+    public int getUser_id() { return user_id; }
     public int getRoll_no() { return roll_no; }
     public String getName() { return name; }
     public String getGender() { return gender; }
@@ -56,8 +58,10 @@ public class Student
     public int getCurrent_sem() { return current_sem; }
     public int getGraduation_year() { return graduation_year; }
     public List<Course> getCourses() { return courses; }
+    public Role getRole() { return role; }
+
     // setters
-    public void setUser_id(String user_id) { this.user_id = user_id; }
+    public void setUser_id(int user_id) { this.user_id = user_id; }
     public void setRoll_no(int roll_no) { this.roll_no = roll_no; }
     public void setName(String name) { this.name = name; }
     public void setGender(String gender) { this.gender = gender; }
@@ -71,4 +75,38 @@ public class Student
     public void setCurrent_sem(int current_sem) { this.current_sem = current_sem; }
     public void setGraduation_year(int graduation_year) { this.graduation_year = graduation_year; }
     public void setCourses(List<Course> courses) { this.courses = courses; }
+    public void setRole(Role role) { this.role = role; }
+
+    ////////////////////////////////////////////////////////////////////
+    //////////////// REMOVE THIS IF IT IS NOT USED /////////////////////
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) {  return true;}
+        if (o == null || getClass() != o.getClass()) { return false; }
+        Student student = (Student) o;
+        return this.user_id == student.user_id;
+    }
+    ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
+
+    @Override public int hashCode() // to ensure admins with same user_id are treated as duplicates; required in HashSet and HashMaps
+    { return Integer.hashCode(this.user_id); }
+
+    @Override public String toString()
+    {
+        return "STUDENT:\nUser ID - " + this.user_id +
+        "\nRoll No. - " + this.roll_no +
+        "\nName - " + this.name +
+        "\nGender - " + this.gender +
+        "\nContact No. - " + this.contact_no +
+        "\nDOB - " + this.dob +
+        "\nNationality - " + this.nationality +
+        "\nEmail ID - " + this.email_id +
+        "\nProgram - " + this.program +
+        "\nBranch - " + this.branch +
+        "\nCurrent Year - " + this.current_year +
+        "\nCurrent Sem - " + this.current_sem +
+        "\nGraduation Year - " + this.graduation_year +
+        "\nCourses - " + this.courses;
+    }
 }

@@ -72,4 +72,17 @@ public class Section
     public void setCapacity(int capacity) { this.capacity = capacity; }
     public void setSemester(int semester) { this.semester = semester; }
     public void setYear(int year) { this.year = year;}
+
+    @Override public String toString()
+    {
+        return "SECTION:\nCourse ID - " + this.course_id +
+        "\nInstructor ID - " + this.instructor_id +
+        "\nDay - " + this.day_time.getDay() +
+        "\nStart Time - " + this.day_time.getStartTime().toString() +
+        "\nDuration - " + this.day_time.getDuration().toString() +
+        "\nRoom - " + this.room +
+        "\nCapacity - " + this.capacity +
+        "\nSemester - " + this.semester +
+        "\nYear - " + this.year;
+    }
 }

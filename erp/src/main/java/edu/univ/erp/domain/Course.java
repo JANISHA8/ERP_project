@@ -5,6 +5,7 @@ public class Course
     private String code;
     private String title;
     private int credits;
+    // credit or audit
     // total no. of students enrolled
 
     // constructor
@@ -24,4 +25,11 @@ public class Course
     public void setCode(String code) { this.code = code; }
     public void setTitle(String title) { this.title = title;}
     public void setCredits(int credits) { this.credits = credits; }
+
+    @Override public String toString()
+    {
+        return "COURSE:\nCode - " + this.code +
+        "\nTitle - " + this.title +
+        "\nCredits - " + this.credits;
+    }
 }

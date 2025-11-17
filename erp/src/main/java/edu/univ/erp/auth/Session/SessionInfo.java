@@ -1,4 +1,4 @@
-package edu.univ.erp.auth.Session;
+package edu.univ.erp.auth.session;
 
 public class SessionInfo
 {}

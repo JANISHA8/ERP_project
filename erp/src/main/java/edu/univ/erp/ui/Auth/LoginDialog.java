@@ -1,4 +1,4 @@
-package edu.univ.erp.ui.Auth;
+package edu.univ.erp.ui.auth;
 
 public class LoginDialog
 {}

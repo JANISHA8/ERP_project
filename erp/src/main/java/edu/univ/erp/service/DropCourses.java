@@ -6,9 +6,9 @@ import edu.univ.erp.auth.session.SessionInfo;
 import edu.univ.erp.domain.Task;
 import edu.univ.erp.data.SettingsData;
 
-public class ComputeFinal
+public class DropCourses
 {
-    public void computeFinal(SessionInfo session, Task task, SettingsData settings)
+    public void dropCourses(SessionInfo session, Task task, SettingsData settings)
     {
         boolean allowed = Allowed.can_operate_rs(session, task) && MaintenanceMode.can_operate_mm(session, settings);
         if (allowed)

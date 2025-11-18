@@ -8,7 +8,7 @@ public class SettingsData
     // fields, constructors, getters, setters
     public boolean getMaintenanceMode()
     {
-        boolean m = false;
+        boolean m = false; // hardcoded for now
         // add code to allow ADMIN to change maintenance mode
         return m;
     }

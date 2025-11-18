@@ -1,0 +1,4 @@
+C:\Users\JANISHA\Documents\New folder\ERP_project\erp
+    mvnd clean compile                            _ // compile
+    cd target/classes                              |-
+        >> java edu.univ.erp.ui.app.Main          _|-run  

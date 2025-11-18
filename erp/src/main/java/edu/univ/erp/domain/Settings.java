@@ -2,8 +2,8 @@ package edu.univ.erp.domain;
 
 public class Settings
 {
-    private String key;
-    private String value;
+    private String key; // eg. maintenance_mode
+    private String value; // eg. ON/OFF
 
     //constructor
     public Settings(String key, String value)

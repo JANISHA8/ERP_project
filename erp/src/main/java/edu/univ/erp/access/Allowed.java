@@ -16,7 +16,7 @@ public class Allowed
             case ADMIN:
                 return true; // ADMIN can perform all tasks
             case INSTRUCTOR:
-                return task==task.ENTER_SCORES || task==Task.COMPUTE_FINAL;
+                return task==Task.ENTER_SCORES || task==Task.COMPUTE_FINAL;
             case STUDENT:
                 return task==Task.DROP_COURSES || task==Task.REGISTER_FOR_COURSES; // not always; need to put more conditions
             default:

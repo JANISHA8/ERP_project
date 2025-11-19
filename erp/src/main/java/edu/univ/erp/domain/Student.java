@@ -19,12 +19,12 @@ public class Student extends User
     private List<Course> courses; //sem wise courses
 
     // constructor
-    Student(int userID, String username, Role STUDENT, String EmailID, String passwordHash, String status, LocalTime lastLogin,
+    Student(int userID, String username, String EmailID, String passwordHash, String status, LocalTime lastLogin,
                 int RollNO, String gender, long contact_no, LocalDate dob, String nationality,
                 String email_id, String program, String branch, int current_year, int current_sem, int graduation_year,
                 List<Course> courses)
     {
-        super(userID, username, STUDENT, EmailID, passwordHash, status, lastLogin);
+        super(userID, username, Role.STUDENT, EmailID, passwordHash, status, lastLogin);
         this.rollNO = RollNO;
         this.gender = gender;
         this.contact_no = contact_no;

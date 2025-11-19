@@ -14,11 +14,11 @@ public class Instructor extends User
     private List<Course> courses; //sem wise courses
 
     // constructor
-    Instructor(int userID, String username, Role INSTRUCTOR, String EmailID, String passwordHash, String status,
+    Instructor(int userID, String username, String EmailID, String passwordHash, String status,
                     LocalTime lastLogin, String gender, long contact_no, LocalDate dob, String nationality,
                     String department, String email_id, List<Course> courses, Role role)
     {
-        super(userID, username, INSTRUCTOR, EmailID, passwordHash, status, lastLogin);
+        super(userID, username, Role.INSTRUCTOR, EmailID, passwordHash, status, lastLogin);
         this.gender = gender;
         this.contact_no = contact_no;
         this.dob = dob;

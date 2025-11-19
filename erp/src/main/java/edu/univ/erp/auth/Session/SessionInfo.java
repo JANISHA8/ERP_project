@@ -1,5 +1,6 @@
 package edu.univ.erp.auth.session;
 
+import edu.univ.erp.domain.User;
 import edu.univ.erp.domain.Role;
 
 public class SessionInfo

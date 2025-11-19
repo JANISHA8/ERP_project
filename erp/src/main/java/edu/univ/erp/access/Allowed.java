@@ -16,9 +16,11 @@ public class Allowed
             case ADMIN:
                 return true; // ADMIN can perform all tasks
             case INSTRUCTOR:
-                return task==Task.ENTER_SCORES || task==Task.COMPUTE_FINAL || task==Task.SEE_MY_SECTIONS || task==Task.SEE_CLASS_STATS;
+                return task==Task.LOGIN || task==Task.SIGNUP || task==Task.ENTER_SCORES || task==Task.COMPUTE_FINAL
+                                        || task==Task.SEE_MY_SECTIONS || task==Task.SEE_CLASS_STATS;
             case STUDENT:
-                return task==Task.DROP_COURSES || task==Task.REGISTER_FOR_COURSES || task==Task.VIEW_TIMETABLE || task==Task.VIEW_GRADES || task==Task.DOWNLOAD_TRANSCRIPT; // not always; need to put more conditions
+                return task==Task.LOGIN || task==Task.SIGNUP || task==Task.DROP_COURSES || task==Task.REGISTER_FOR_COURSES
+                                        || task==Task.VIEW_TIMETABLE || task==Task.VIEW_GRADES || task==Task.DOWNLOAD_TRANSCRIPT; // not always; need to put more conditions
             default:
                 return false; // or error message
         }

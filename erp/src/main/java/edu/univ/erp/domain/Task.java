@@ -2,6 +2,7 @@ package edu.univ.erp.domain;
 
 public enum Task
 {
+    SIGNUP,
     LOGIN,
     ADD_USER,
     DELETE_USER,

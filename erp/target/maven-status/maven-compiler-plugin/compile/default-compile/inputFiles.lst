@@ -14,11 +14,12 @@ C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp
 C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\domain\Section.java
 C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\domain\Settings.java
 C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\domain\Student.java
+C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\domain\Task.java
+C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\domain\User.java
 C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\service\AddUsers.java
 C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\service\ComputeFinal.java
-C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\service\Drop.java
+C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\service\DropCourses.java
 C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\service\EnterScores.java
-C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\service\Register.java
+C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\service\RegisterForCourses.java
 C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\service\ToggleMaintenance.java
-C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\ui\app\Main.java
-C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\ui\auth\LoginDialog.java
+C:\Users\JANISHA\Documents\New folder\ERP_project\erp\src\main\java\edu\univ\erp\ui\auth\LoginFrame.java

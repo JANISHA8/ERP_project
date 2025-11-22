@@ -9,7 +9,7 @@ public class MaintenanceMode
     // static keyword is used so that we do not need to create an object of Allowed class
     public static boolean can_operate_mm(SessionInfo session, SettingsData settings) // acc to maintenance mode
     {
-        boolean maintenance = settings.getMaintenanceMode();
+        boolean maintenance = settings.getSetting("Maintenance_Mode");
         if (maintenance)
         {
             return session.getRole() == Role.ADMIN;

@@ -2,7 +2,7 @@ package edu.univ.erp.domain;
 
 import java.util.List;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class Student extends User
 {
@@ -19,7 +19,7 @@ public class Student extends User
     private List<Course> courses; //sem wise courses
 
     // constructor
-    Student(int userID, String username, String EmailID, String passwordHash, String status, LocalTime lastLogin,
+    Student(int userID, String username, String EmailID, String passwordHash, String status, LocalDateTime lastLogin,
                 int RollNO, String gender, long contact_no, LocalDate dob, String nationality,
                 String email_id, String program, String branch, int current_year, int current_sem, int graduation_year,
                 List<Course> courses)

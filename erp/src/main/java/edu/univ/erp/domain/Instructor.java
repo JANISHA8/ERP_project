@@ -2,7 +2,7 @@ package edu.univ.erp.domain;
 
 import java.util.List;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class Instructor extends User
 {
@@ -15,7 +15,7 @@ public class Instructor extends User
 
     // constructor
     Instructor(int userID, String username, String EmailID, String passwordHash, String status,
-                    LocalTime lastLogin, String gender, long contact_no, LocalDate dob, String nationality,
+                    LocalDateTime lastLogin, String gender, long contact_no, LocalDate dob, String nationality,
                     String department, String email_id, List<Course> courses, Role role)
     {
         super(userID, username, Role.INSTRUCTOR, EmailID, passwordHash, status, lastLogin);

@@ -1,6 +1,6 @@
 package edu.univ.erp.domain;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class Admin extends User
 {
@@ -8,7 +8,7 @@ public class Admin extends User
 
     // constructor
     Admin(int userID, String username, String EmailID, String passwordHash,
-            String status, LocalTime lastLogin, String department)
+            String status, LocalDateTime lastLogin, String department)
     {
         super(userID, username, Role.ADMIN, EmailID, passwordHash, status, lastLogin);
         this.department = department;

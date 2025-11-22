@@ -78,23 +78,31 @@ public class LoginFrame extends JFrame
         loginPanel.add(title3, gbc);
 
         gbc.gridwidth = 1;
+        gbc.weightx = 1;
         gbc.insets = new Insets(15, 15, 15, 15);
         gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel space1 = new JLabel (" ");
+        space1.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.CENTER;
+        loginPanel.add(space1, gbc);
 
         // EmailID Label
         JLabel emailID = new JLabel("Email ID: ");
         emailID.setForeground(Color.WHITE);
         emailID.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.EAST;
         loginPanel.add(emailID, gbc);
 
         // EmailID Text Field
-        JTextField EmailIDEntered = new JTextField(15);
+        JTextField EmailIDEntered = new JTextField(25);
         EmailIDEntered.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
         loginPanel.add(EmailIDEntered, gbc);
 
@@ -103,15 +111,15 @@ public class LoginFrame extends JFrame
         password.setForeground(Color.WHITE);
         password.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         gbc.anchor = GridBagConstraints.EAST;
         loginPanel.add(password, gbc);
 
         // Password Password Field
-        JTextField PasswordEntered = new JPasswordField(15);
+        JTextField PasswordEntered = new JPasswordField(25);
         PasswordEntered.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         gbc.anchor = GridBagConstraints.WEST;
         loginPanel.add(PasswordEntered, gbc);
 
@@ -120,41 +128,49 @@ public class LoginFrame extends JFrame
         role.setForeground(Color.WHITE);
         role.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.anchor = GridBagConstraints.EAST;
         loginPanel.add(role, gbc);
 
         // Role Dropdown
         String[] roles = {"ADMIN", "INSTRUCTOR", "STUDENT"};
         JComboBox<String> RoleDropdown = new JComboBox<>(roles);
+        RoleDropdown.setPreferredSize(new Dimension(280, 30));
         RoleDropdown.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.anchor = GridBagConstraints.WEST;
         loginPanel.add(RoleDropdown, gbc);
+        
+        JLabel space2 = new JLabel (" ");
+        space2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.anchor = GridBagConstraints.CENTER;
+        loginPanel.add(space2, gbc);
 
         gbc.gridwidth = 2;
         /*-----------------------------------------------------
-        // Cancel Button
-        JButton CancelB = new JButton("CANCEL");
-        CancelB.setForeground(Color.WHITE);
-        CancelB.setBackground(new Color(90, 90, 90));
-        CancelB.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        // Signup Button
+        JButton SignupB = new JButton("CANCEL");
+        SignupB.setForeground(Color.WHITE);
+        SignupB.setBackground(new Color(90, 90, 90));
+        SignupB.setFont(new Font("Segoe UI", Font.BOLD, 16));
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         gbc.anchor = GridBagConstraints.CENTRE;
         gbc.fill = GridBagConstraints.NONE;
-        loginPanel.add(CancelB, gbc);
+        loginPanel.add(SignupB, gbc);
         --------------------------------------------------------*/
 
         // Login Button
         JButton LoginB = new JButton("LOGIN");
-        LoginB.setPreferredSize(new Dimension(140, 40));
+        LoginB.setPreferredSize(new Dimension(140, 243));
         LoginB.setForeground(Color.WHITE);
-        LoginB.setBackground(new Color(0, 102, 204));
+        LoginB.setBackground(new Color(33, 150, 90));
         LoginB.setFont(new Font("Segoe UI", Font.BOLD, 16));
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
         loginPanel.add(LoginB, gbc);

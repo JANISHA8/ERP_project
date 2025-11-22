@@ -8,13 +8,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentsData {
-
-    // ---------------------------------------------------
+public class StudentsData
+{
     // GET STUDENT BY USER ID
-    // ---------------------------------------------------
-    public Student getStudentByUserId(int userId) {
-
+    public Student getStudentByUserId(int userId)
+    {
         String sql =
             "SELECT s.*, u.username, u.email_id AS user_email, u.password_hash, " +
             "u.status, u.last_login " +
@@ -23,13 +21,13 @@ public class StudentsData {
             "WHERE s.user_id = ?";
 
         try (Connection conn = ERPDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+             PreparedStatement stmt = conn.prepareStatement(sql))
+        {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-
+            if (rs.next())
+            {
                 // Handle DOB
                 Date dobSql = rs.getDate("dob");
                 LocalDate dob = (dobSql == null) ? null : dobSql.toLocalDate();
@@ -44,12 +42,11 @@ public class StudentsData {
                     rs.getString("user_email"),       // EmailID (from users_auth)
                     rs.getString("password_hash"),    // passwordHash
                     rs.getString("status"),           // status
-                    lastLogin,                        // lastLogin
-
+                    lastLogin,                                     // lastLogin
                     rs.getInt("roll_no"),             // RollNO
                     rs.getString("gender"),           // gender
                     rs.getLong("contact_no"),         // contact_no
-                    dob,                              // dob
+                    dob,                                           // dob
                     rs.getString("nationality"),      // nationality
                     rs.getString("email_id"),         // email_id (student table)
                     rs.getString("program"),          // program
@@ -57,24 +54,18 @@ public class StudentsData {
                     rs.getInt("current_year"),        // current_year
                     rs.getInt("current_sem"),         // current_sem
                     rs.getInt("graduation_year"),     // graduation_year
-
-                    null                              // courses
+                    null                                  // courses
                 );
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e)
+        { e.printStackTrace(); }
 
         return null;
     }
 
-
-    // ---------------------------------------------------
     // GET ALL STUDENTS
-    // ---------------------------------------------------
-    public List<Student> getAllStudents() {
-
+    public List<Student> getAllStudents()
+    {
         List<Student> list = new ArrayList<>();
 
         String sql =
@@ -85,10 +76,10 @@ public class StudentsData {
 
         try (Connection conn = ERPDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-
+             ResultSet rs = stmt.executeQuery())
+        {
+            while (rs.next())
+            {
                 // Handle DOB
                 Date dobSql = rs.getDate("dob");
                 LocalDate dob = (dobSql == null) ? null : dobSql.toLocalDate();
@@ -103,12 +94,11 @@ public class StudentsData {
                     rs.getString("user_email"),       // EmailID (user table)
                     rs.getString("password_hash"),    // passwordHash
                     rs.getString("status"),           // status
-                    lastLogin,                        // lastLogin
-
+                    lastLogin,                                    // lastLogin
                     rs.getInt("roll_no"),             // RollNO
                     rs.getString("gender"),           // gender
                     rs.getLong("contact_no"),         // contact_no
-                    dob,                              // dob
+                    dob,                                          // dob
                     rs.getString("nationality"),      // nationality
                     rs.getString("email_id"),         // email_id (student table)
                     rs.getString("program"),          // program
@@ -116,32 +106,26 @@ public class StudentsData {
                     rs.getInt("current_year"),        // current_year
                     rs.getInt("current_sem"),         // current_sem
                     rs.getInt("graduation_year"),     // graduation_year
-
-                    null                              // courses
+                    null                                  // courses
                 ));
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e)
+        { e.printStackTrace(); }
 
         return list;
     }
 
-
-    // ---------------------------------------------------
     // INSERT STUDENT
-    // ---------------------------------------------------
-    public boolean insertStudent(Student s) {
-
+    public boolean insertStudent(Student s)
+    {
         String sql =
             "INSERT INTO students (user_id, roll_no, gender, contact_no, dob, nationality, " +
             "email_id, program, branch, current_year, current_sem, graduation_year) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ERPDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+             PreparedStatement stmt = conn.prepareStatement(sql))
+        {
             stmt.setInt(1, s.getUserID());
             stmt.setInt(2, s.getRollNO());
             stmt.setString(3, s.getGender());
@@ -156,28 +140,23 @@ public class StudentsData {
             stmt.setInt(12, s.getGraduation_year());
 
             return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e)
+        { e.printStackTrace(); }
 
         return false;
     }
 
-
-    // ---------------------------------------------------
     // UPDATE STUDENT INFO
-    // ---------------------------------------------------
-    public boolean updateStudent(Student s) {
-
+    public boolean updateStudent(Student s)
+    {
         String sql =
             "UPDATE students SET roll_no=?, gender=?, contact_no=?, dob=?, nationality=?, " +
             "email_id=?, program=?, branch=?, current_year=?, current_sem=?, graduation_year=? " +
             "WHERE user_id=?";
 
         try (Connection conn = ERPDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+             PreparedStatement stmt = conn.prepareStatement(sql))
+        {
             stmt.setInt(1, s.getRollNO());
             stmt.setString(2, s.getGender());
             stmt.setLong(3, s.getContact_no());
@@ -193,9 +172,8 @@ public class StudentsData {
 
             return stmt.executeUpdate() > 0;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e)
+        { e.printStackTrace(); }
 
         return false;
     }

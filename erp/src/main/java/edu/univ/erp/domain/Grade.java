@@ -8,7 +8,7 @@ public class Grade
     private String final_grade; // A+, A, A-, B,... // their numeric equivalents ?
 
     // constructor
-    Grade(String enrollment_id, String component, double score, String final_grade)
+    public Grade(String enrollment_id, String component, double score, String final_grade)
     {
         this.enrollment_id = enrollment_id;
         this.component = component;

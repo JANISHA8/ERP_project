@@ -9,7 +9,7 @@ public class Course
     // total no. of students enrolled
 
     // constructor
-    Course(String code, String title, int credits)
+    public Course(String code, String title, int credits)
     {
         this.code = code;
         this.title = title;

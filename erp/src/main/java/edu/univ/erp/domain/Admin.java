@@ -7,7 +7,7 @@ public class Admin extends User
     private String department;
 
     // constructor
-    Admin(int userID, String username, String EmailID, String passwordHash,
+    public Admin(int userID, String username, String EmailID, String passwordHash,
             String status, LocalDateTime lastLogin, String department)
     {
         super(userID, username, Role.ADMIN, EmailID, passwordHash, status, lastLogin);

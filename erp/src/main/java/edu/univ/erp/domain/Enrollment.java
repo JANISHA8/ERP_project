@@ -7,7 +7,7 @@ public class Enrollment
     private String status;
 
     // constructor
-    Enrollment(String student_id, String section_id, String status)
+    public Enrollment(String student_id, String section_id, String status)
     {
         this.student_id = student_id;
         this.section_id = section_id;

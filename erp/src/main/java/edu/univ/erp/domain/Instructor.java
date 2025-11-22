@@ -14,7 +14,7 @@ public class Instructor extends User
     private List<Course> courses; //sem wise courses
 
     // constructor
-    Instructor(int userID, String username, String EmailID, String passwordHash, String status,
+    public Instructor(int userID, String username, String EmailID, String passwordHash, String status,
                     LocalDateTime lastLogin, String gender, long contact_no, LocalDate dob, String nationality,
                     String department, String email_id, List<Course> courses, Role role)
     {

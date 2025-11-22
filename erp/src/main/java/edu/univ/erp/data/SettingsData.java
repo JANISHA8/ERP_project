@@ -8,7 +8,7 @@ import java.sql.*;
 public class SettingsData
 {
     // GET a setting by key
-    public Settings getSetting(String key)
+    public static Settings getSetting(String key)
     {
         String sql = "SELECT * FROM settings WHERE `key` = ?";
 

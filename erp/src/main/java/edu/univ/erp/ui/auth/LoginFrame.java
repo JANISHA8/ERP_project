@@ -3,6 +3,12 @@ package edu.univ.erp.ui.auth;
 import javax.swing.*;
 import java.awt.*;
 
+import edu.univ.erp.api.auth.LoginAPI;
+import edu.univ.erp.domain.User;
+import edu.univ.erp.ui.student.StudentDashboard;
+import edu.univ.erp.ui.instructor.InstructorDashboard;
+import edu.univ.erp.ui.admin.AdminDashboard;
+
 public class LoginFrame extends JFrame
 {
     // Background Image
@@ -10,7 +16,7 @@ public class LoginFrame extends JFrame
     {
         private Image image;
         private float opacity;
-        public ImagePanel(String path, float Opacity)
+        public ImagePanel(float Opacity)
         {
             this.image = new ImageIcon(getClass().getClassLoader().getResource("images/bg.png")).getImage();
             this.opacity = Opacity;
@@ -36,7 +42,7 @@ public class LoginFrame extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Background Image Panel
-        ImagePanel imagePanel = new ImagePanel("images/bg.png", 1f);
+        ImagePanel imagePanel = new ImagePanel(1f);
         add(imagePanel);
 
         // Login Panel
@@ -83,20 +89,19 @@ public class LoginFrame extends JFrame
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel space1 = new JLabel (" ");
-        space1.setFont(new Font("Segoe UI", Font.PLAIN, 30));
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.CENTER;
         loginPanel.add(space1, gbc);
 
         // EmailID Label
-        JLabel emailID = new JLabel("Email ID: ");
-        emailID.setForeground(Color.WHITE);
-        emailID.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        JLabel emailIDL = new JLabel("Email ID: ");
+        emailIDL.setForeground(Color.WHITE);
+        emailIDL.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.EAST;
-        loginPanel.add(emailID, gbc);
+        loginPanel.add(emailIDL, gbc);
 
         // EmailID Text Field
         JTextField EmailIDEntered = new JTextField(25);
@@ -107,13 +112,13 @@ public class LoginFrame extends JFrame
         loginPanel.add(EmailIDEntered, gbc);
 
         // Password Label
-        JLabel password = new JLabel("Password: ");
-        password.setForeground(Color.WHITE);
-        password.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        JLabel passwordL = new JLabel("Password: ");
+        passwordL.setForeground(Color.WHITE);
+        passwordL.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.anchor = GridBagConstraints.EAST;
-        loginPanel.add(password, gbc);
+        loginPanel.add(passwordL, gbc);
 
         // Password Password Field
         JTextField PasswordEntered = new JPasswordField(25);
@@ -124,13 +129,13 @@ public class LoginFrame extends JFrame
         loginPanel.add(PasswordEntered, gbc);
 
         // Role Label
-        JLabel role = new JLabel("Role: ");
-        role.setForeground(Color.WHITE);
-        role.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        JLabel roleL = new JLabel("Role: ");
+        roleL.setForeground(Color.WHITE);
+        roleL.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.anchor = GridBagConstraints.EAST;
-        loginPanel.add(role, gbc);
+        loginPanel.add(roleL, gbc);
 
         // Role Dropdown
         String[] roles = {"ADMIN", "INSTRUCTOR", "STUDENT"};
@@ -143,7 +148,6 @@ public class LoginFrame extends JFrame
         loginPanel.add(RoleDropdown, gbc);
         
         JLabel space2 = new JLabel (" ");
-        space2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -174,6 +178,34 @@ public class LoginFrame extends JFrame
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
         loginPanel.add(LoginB, gbc);
+
+        LoginB.addActionListener(e ->
+            {
+                String email = EmailIDEntered.getText().trim();
+                String password = PasswordEntered.getText().trim();
+                String role = RoleDropdown.getSelectedItem().toString();
+
+                LoginAPI lApi = new LoginAPI();
+                User user = lApi.login(email, password, role);
+
+                if (user == null)
+                {
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "Enter correct username, password, role\n",
+                        "Login Failed\n",
+                        JOptionPane.ERROR_MESSAGE);
+                        return;
+                }
+                dispose(); // cloase login window
+
+                switch (user.getRole())
+                {
+                    case STUDENT -> new StudentDashboard().setVisible(true);
+                    case INSTRUCTOR -> new InstructorDashboard().setVisible(true);
+                    case ADMIN -> new AdminDashboard().setVisible(true);
+                }
+            });
 
         imagePanel.add(loginPanel);
     }

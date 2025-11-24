@@ -1,8 +1,9 @@
 for powershell:
 C:\Users\JANISHA\Documents\New folder\ERP_project\erp
-    mvnd clean compile                              //         _ compile
-    cd target/classes                               //          |-
-        >> java edu.univ.erp.ui.auth.LoginDialog    //         _|-run
+    mvnd clean compile                                   //         _ compile
+    """""cd target/classes                               //          |-
+        >> java edu.univ.erp.ui.auth.LoginDialog         //         _|-run"""""
+    java -cp "target/classes;C:/Users/JANISHA/.m2/repository/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar" edu.univ.erp.ui.auth.LoginFrame
 
 for cmd:
 C:\Users\JANISHA\Documents\New folder\ERP_project\erp

@@ -197,7 +197,7 @@ public class LoginFrame extends JFrame
                         JOptionPane.ERROR_MESSAGE);
                         return;
                 }
-                dispose(); // cloase login window
+                dispose(); // close login window
 
                 switch (user.getRole())
                 {

@@ -8,13 +8,14 @@ public class LoginAPI
 {
     private final UserAuth auth = new UserAuth();
 
-    public User login(String username, String password, String role)
+    public User login(String email, String password, String role)
     {
-        boolean valid = auth.checkUser(username, password, role);
+        // String hashedPassword = hashPassword(password);
+        boolean valid = auth.checkUser(email, password, role);
         if (!valid)
         { return null; }
 
-        User user = auth.getUserByUsername(username);
+        User user = auth.getUserByEmail(email);
         if (user != null)
         {
             SessionInfo.start(

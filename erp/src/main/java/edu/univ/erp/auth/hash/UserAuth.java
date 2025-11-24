@@ -39,14 +39,14 @@ public class UserAuth
     }
 
     // CHECK USER CREDENTIALS
-    public boolean checkUser(String username, String password, String role)
+    public boolean checkUser(String email, String password, String role)
     {
-        String sql = "SELECT * FROM users_auth WHERE username=? AND password_hash=? AND role=?";
+        String sql = "SELECT * FROM users_auth WHERE email_id=? AND password_hash=? AND role=?";
 
         try (Connection conn = AuthDB.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql))
         {
-            pst.setString(1, username);
+            pst.setString(1, email);
             pst.setString(2, hashPassword(password));
             pst.setString(3, role);
 
@@ -68,6 +68,38 @@ public class UserAuth
              PreparedStatement stmt = conn.prepareStatement(sql))
         {
             stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next())
+            {
+                Timestamp ts = rs.getTimestamp("last_login");
+                LocalDateTime lastLogin = (ts == null) ? null : ts.toLocalDateTime();
+
+                return new User(
+                    rs.getInt("user_id"),
+                    rs.getString("username"),
+                    Role.valueOf(rs.getString("role")),
+                    rs.getString("email_id"),
+                    rs.getString("password_hash"),
+                    rs.getString("status"),
+                    lastLogin);
+            }
+
+        } catch (SQLException e)
+        { e.printStackTrace(); }
+
+        return null;
+    }
+
+    // GET USER BY EMAILID
+    public User getUserByEmail(String email)
+    {
+        String sql = "SELECT * FROM users_auth WHERE email_id = ?";
+
+        try (Connection conn = AuthDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql))
+        {
+            stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next())

@@ -1,6 +1,5 @@
 package edu.univ.erp.auth.session;
 
-import edu.univ.erp.domain.User;
 import edu.univ.erp.domain.Role;
 
 public class SessionInfo
@@ -20,6 +19,12 @@ public class SessionInfo
     public static String getUsername() { return username; }
     public static Role getRole() { return role; }
 
+    public static void end()
+    {
+        userID = -1;
+        username = null;
+        role = null;
+    }
     // get user role from DB and return it in the following function
     // can add more info about user (apart from just the role)
 }

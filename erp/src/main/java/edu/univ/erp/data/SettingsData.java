@@ -10,7 +10,7 @@ public class SettingsData
     // GET a setting by key
     public static Settings getSetting(String key)
     {
-        String sql = "SELECT * FROM settings WHERE `key` = ?";
+        String sql = "SELECT value FROM settings WHERE setting_key = ?";
 
         try (Connection conn = ERPDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql))
@@ -35,7 +35,7 @@ public class SettingsData
     // UPDATE a setting
     public boolean updateSetting(String key, String value)
     {
-        String sql = "UPDATE settings SET value = ? WHERE `key` = ?";
+        String sql = "SELECT value FROM settings WHERE setting_key = ?";
 
         try (Connection conn = ERPDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql))

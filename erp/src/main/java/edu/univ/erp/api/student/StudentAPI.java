@@ -7,29 +7,29 @@ import edu.univ.erp.service.DropCourses;
 
 public class StudentAPI
 {
-    public boolean registerCourse(int courseId)
+    // REGISTER COURSE
+    public boolean registerCourse(String courseCode)
     {
-        SessionInfo session = SessionInfo.getCurrentSession();
-
-        if(session == null) {
+        if(!SessionInfo.isLoggedIn())
+        {
             System.out.println("No active session");
             return false;
         }
 
         RegisterForCourses service = new RegisterForCourses();
-        return service.register(session, Task.REGISTER_FOR_COURSES, courseId);
+        return service.register(new SessionInfo(), Task.REGISTER_FOR_COURSES, courseCode);
     }
 
+    // DROP COURSE
     public boolean dropCourse(int courseId)
     {
-        SessionInfo session = SessionInfo.getCurrentSession();
-
-        if(session == null) {
+        if(!SessionInfo.isLoggedIn())
+        {
             System.out.println("No active session");
             return false;
         }
 
         DropCourses service = new DropCourses();
-        return service.drop(session, Task.DROP_COURSES, courseId);
+        return service.drop(new SessionInfo(), Task.REGISTER_FOR_COURSES, courseId);
     }
 }

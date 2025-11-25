@@ -5,6 +5,7 @@ import edu.univ.erp.domain.Course;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,30 @@ public class CourseData
     // Get all courses
     public List<Course> getAllCourses()
     { return new ArrayList<>(courses); } // return a copy
+
+    // Get course ID by course CODE from DB
+    public static int getCourseIdByCode(String code)
+    {
+        String sql = "SELECT course_id FROM courses WHERE code = ?";
+
+        try (Connection con = AuthDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, code);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next())
+            {
+                return rs.getInt("course_id");
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return -1; // not found
+    }
 
     // Update a course
     public boolean updateCourse(Course updatedCourse)
@@ -68,15 +93,29 @@ public class CourseData
     }
 
     // Register Student
-    public static boolean registerStudent(int studentId, int courseId)
+    public static boolean registerStudent(int studentId, String courseCode)
     {
+        String check = "SELECT * FROM student_courses WHERE student_id=? AND course_id=?";
         String sql = "INSERT INTO student_courses(student_id, course_id) VALUES (?, ?)";
 
-        try (Connection con = AuthDB.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql))
+        try (Connection con = AuthDB.getConnection())
         {
+            // check if already registered
+            PreparedStatement pst = con.prepareStatement(check);
+            pst.setInt(1, studentId);
+            pst.setString(2, courseCode);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next())
+            {
+                System.out.println("Student already registered for this course.");
+                return false;
+            }
+
+            // insert if not exists
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, studentId);
-            ps.setInt(2, courseId);
+            ps.setString(2, courseCode);
 
             return ps.executeUpdate() > 0;
 

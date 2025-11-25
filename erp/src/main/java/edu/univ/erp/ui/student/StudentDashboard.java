@@ -4,6 +4,7 @@ import edu.univ.erp.ui.auth.LoginFrame;
 import edu.univ.erp.ui.common.BaseDashboard;
 import edu.univ.erp.ui.common.SettingsPanel;
 import edu.univ.erp.auth.session.SessionInfo;
+import edu.univ.erp.ui.student.RegisterCoursePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,8 @@ public class StudentDashboard extends BaseDashboard
 
         JButton btnHome = createButton("Home");
         JButton btnMyCourses = createButton("My Courses");
+        JButton btnRegister = createButton("Register Course");
+        JButton btnDrop = createButton("Drop Course");
         JButton btnAttendance = createButton("Attendance");
         JButton btnResults = createButton("My Results");
         JButton btnProfile = createButton("Profile");
@@ -23,6 +26,8 @@ public class StudentDashboard extends BaseDashboard
 
         sidebar.add(btnHome);
         sidebar.add(btnMyCourses);
+        sidebar.add(btnRegister);
+        sidebar.add(btnDrop);
         sidebar.add(btnAttendance);
         sidebar.add(btnResults);
         sidebar.add(btnProfile);
@@ -45,6 +50,20 @@ public class StudentDashboard extends BaseDashboard
         btnMyCourses.addActionListener(e -> {
             mainPanel.removeAll();
             mainPanel.add(new StudentCoursesPanel(), BorderLayout.CENTER);
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        });
+
+        btnRegister.addActionListener(e -> {
+            mainPanel.removeAll();
+            mainPanel.add(new RegisterCoursePanel(), BorderLayout.CENTER);
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        });
+
+        btnDrop.addActionListener(e -> {
+            mainPanel.removeAll();
+            mainPanel.add(new DropCoursePanel(), BorderLayout.CENTER);
             mainPanel.revalidate();
             mainPanel.repaint();
         });

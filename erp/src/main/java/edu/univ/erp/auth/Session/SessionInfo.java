@@ -38,15 +38,6 @@ public class SessionInfo
         return userID != -1 && role != null;
     }
 
-    // RETURN CURRENT SESSION
-    public static SessionInfo getCurrentSession()
-    {
-        if(!isLoggedIn())
-            return null;
-
-        return new SessionInfo();
-    }
-
     // GETTERS
     public static int getUserID()
     {

@@ -15,8 +15,16 @@ public class RegisterForCourses
                 Allowed.can_operate_rs(session, task) &&
                 MaintenanceMode.can_operate_mm(session, new SettingsData());
 
-        if(!allowed) return false;
+        if (!allowed) return false;
 
-        return CourseData.registerStudent(SessionInfo.getUserID(), courseCode);
+        Integer courseId = CourseData.getCourseIdByCode(courseCode);
+
+        if (courseId == null)
+        {
+            System.out.println("Course not found in DB: " + courseCode);
+            return false;
+        }
+
+        return CourseData.registerStudent(SessionInfo.getUserID(), courseId);
     }
 }

@@ -15,7 +15,6 @@ public class StudentAPI
             System.out.println("No active session");
             return false;
         }
-
         RegisterForCourses service = new RegisterForCourses();
         return service.register(new SessionInfo(), Task.REGISTER_FOR_COURSES, courseCode);
     }
@@ -28,8 +27,7 @@ public class StudentAPI
             System.out.println("No active session");
             return false;
         }
-
         DropCourses service = new DropCourses();
-        return service.drop(new SessionInfo(), Task.REGISTER_FOR_COURSES, courseId);
+        return service.drop(new SessionInfo(), Task.DROP_COURSES, courseId);
     }
 }

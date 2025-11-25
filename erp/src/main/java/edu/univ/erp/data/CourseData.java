@@ -37,28 +37,24 @@ public class CourseData
     public List<Course> getAllCourses()
     { return new ArrayList<>(courses); } // return a copy
 
-    // Get course ID by course CODE from DB
-    public static int getCourseIdByCode(String code)
+    // Get courseID by courseCode
+    public static Integer getCourseIdByCode(String code)
     {
         String sql = "SELECT course_id FROM courses WHERE code = ?";
 
-        try (Connection con = AuthDB.getConnection();
+        try (Connection con = ERPDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql))
         {
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
-            {
-                return rs.getInt("course_id");
-            }
-
+            if (rs.next())
+                { return rs.getInt("course_id"); }
+            return null;
         } catch (Exception e)
         {
             e.printStackTrace();
+            return null;
         }
-
-        return -1; // not found
     }
 
     // Update a course
@@ -93,7 +89,7 @@ public class CourseData
     }
 
     // Register Student
-    public static boolean registerStudent(int studentId, String courseCode)
+    public static boolean registerStudent(int studentId, int courseId)
     {
         String check = "SELECT * FROM student_courses WHERE student_id=? AND course_id=?";
         String sql = "INSERT INTO student_courses(student_id, course_id) VALUES (?, ?)";
@@ -103,7 +99,7 @@ public class CourseData
             // check if already registered
             PreparedStatement pst = con.prepareStatement(check);
             pst.setInt(1, studentId);
-            pst.setString(2, courseCode);
+            pst.setInt(2, courseId);
 
             ResultSet rs = pst.executeQuery();
             if (rs.next())
@@ -115,7 +111,7 @@ public class CourseData
             // insert if not exists
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, studentId);
-            ps.setString(2, courseCode);
+            ps.setInt(2, courseId);
 
             return ps.executeUpdate() > 0;
 

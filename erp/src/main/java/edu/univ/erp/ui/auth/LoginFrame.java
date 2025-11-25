@@ -179,34 +179,43 @@ public class LoginFrame extends JFrame
         gbc.fill = GridBagConstraints.NONE;
         loginPanel.add(LoginB, gbc);
 
-        LoginB.addActionListener(e ->
+        LoginAPI api = new LoginAPI();
+
+        LoginB.addActionListener(e -> {
+
+            String email = EmailIDEntered.getText();
+            String password = new String(PasswordEntered.getText().trim());
+            String role = RoleDropdown.getSelectedItem().toString();
+
+            User user = api.login(email, password, role);
+
+            if (user != null)
             {
-                String email = EmailIDEntered.getText().trim();
-                String password = PasswordEntered.getText().trim();
-                String role = RoleDropdown.getSelectedItem().toString();
+                dispose(); // Close login window
+                String username = user.getUsername();
 
-                LoginAPI lApi = new LoginAPI();
-                User user = lApi.login(email, password, role);
+                switch (role) {
+                    case "ADMIN":
+                        new AdminDashboard(username).setVisible(true);
+                        break;
 
-                if (user == null)
-                {
-                    JOptionPane.showMessageDialog(
-                        this,
-                        "Enter correct username, password, role\n",
-                        "Login Failed\n",
+                    case "STUDENT":
+                        new StudentDashboard(username).setVisible(true);
+                        break;
+
+                    case "INSTRUCTOR":
+                        new InstructorDashboard(username).setVisible(true);
+                        break;
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this,
+                        "Invalid Credentials",
+                        "Error",
                         JOptionPane.ERROR_MESSAGE);
-                        return;
-                }
-                dispose(); // close login window
-
-                switch (user.getRole())
-                {
-                    case STUDENT -> new StudentDashboard().setVisible(true);
-                    case INSTRUCTOR -> new InstructorDashboard().setVisible(true);
-                    case ADMIN -> new AdminDashboard().setVisible(true);
-                }
-            });
-
+            }
+        });
         imagePanel.add(loginPanel);
     }
     public static void main(String[] args)

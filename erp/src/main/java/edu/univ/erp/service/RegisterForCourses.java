@@ -4,20 +4,20 @@ import edu.univ.erp.access.Allowed;
 import edu.univ.erp.access.MaintenanceMode;
 import edu.univ.erp.auth.session.SessionInfo;
 import edu.univ.erp.domain.Task;
+import edu.univ.erp.data.CourseData;
 import edu.univ.erp.data.SettingsData;
 
 public class RegisterForCourses
 {
-    public void registerForCourses(SessionInfo session, Task task, SettingsData settings)
+    public boolean register(SessionInfo session, Task task, int courseId)
     {
-        boolean allowed = Allowed.can_operate_rs(session, task) && MaintenanceMode.can_operate_mm(session, settings);
-        if (allowed)
+        if (!Allowed.can_operate_rs(session, task) || 
+            !MaintenanceMode.can_operate_mm(session, new SettingsData()))
         {
-            // perform this task
+            return false;
         }
-        else
-        {
-            // print error message
-        }
+
+        // CALL DATA LAYER
+        return CourseData.registerStudent(session.getUserID(), courseId);
     }
 }

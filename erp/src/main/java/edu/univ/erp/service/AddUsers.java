@@ -14,6 +14,7 @@ public class AddUsers
         if (allowed)
         {
             // perform this task
+            // call DB layers (DB layers has the code of performing functions and connections to mysql)
         }
         else
         {

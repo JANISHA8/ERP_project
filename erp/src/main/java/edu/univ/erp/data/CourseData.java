@@ -1,6 +1,10 @@
 package edu.univ.erp.data;
 
+import edu.univ.erp.auth.hash.AuthDB;
 import edu.univ.erp.domain.Course;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +65,46 @@ public class CourseData
             return true;
         }
         return false;
+    }
+
+    // Register Student
+    public static boolean registerStudent(int studentId, int courseId)
+    {
+        String sql = "INSERT INTO student_courses(student_id, course_id) VALUES (?, ?)";
+
+        try (Connection con = AuthDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setInt(1, studentId);
+            ps.setInt(2, courseId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Drop Student
+    public static boolean dropStudent(int studentId, int courseId)
+    {
+        String sql = "DELETE FROM student_courses WHERE student_id=? AND course_id=?";
+
+        try (Connection con = AuthDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setInt(1, studentId);
+            ps.setInt(2, courseId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Decrement number of students enrolled

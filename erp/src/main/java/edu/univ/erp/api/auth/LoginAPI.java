@@ -21,6 +21,7 @@ public class LoginAPI
             SessionInfo.start(
                 user.getUserID(),
                 user.getUsername(),
+                user.getEmailID(),
                 user.getRole());
         }
         return user;

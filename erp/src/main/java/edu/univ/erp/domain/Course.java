@@ -5,39 +5,38 @@ public class Course
     private String code;
     private String title;
     private int credits;
-    private String type; // credit or audit
-    private int numStudents; // total no. of students enrolled
+    private String type;
+    private int maxStudents;
+    private int numStudents;
+    private String instructorName;
 
-    // constructor
-    public Course(String code, String title, int credits, String type, int numStudents)
+    // CONSTRUCTOR
+    public Course(String code, String title, int credits, String type, int maxStudents, int numStudents, String instructorName)
     {
         this.code = code;
         this.title = title;
         this.credits = credits;
         this.type = type;
+        this.maxStudents = maxStudents;
         this.numStudents = numStudents;
+        this.instructorName = instructorName;
     }
 
-    // getters
+    // GETTERS
     public String getCode() { return code; }
     public String getTitle() { return title; }
     public int getCredits() { return credits; }
     public String getType() { return type; }
+    public int getMaxStudents() { return maxStudents; }
     public int getNumStudents() { return numStudents; }
+    public String getInstructorName() { return instructorName; }
 
-    // setters
+    // SETTERS
     public void setCode(String code) { this.code = code; }
-    public void setTitle(String title) { this.title = title;}
+    public void setTitle(String title) { this.title = title; }
     public void setCredits(int credits) { this.credits = credits; }
     public void setType(String type) { this.type = type; }
+    public void setMaxStudents(int maxStudents) { this.maxStudents = maxStudents; }
     public void setNumStudents(int numStudents) { this.numStudents = numStudents; }
-
-    @Override public String toString()
-    {
-        return "COURSE:\nCode - " + this.code +
-        "\nTitle - " + this.title +
-        "\nCredits - " + this.credits +
-        "\nType - " + this.type +
-        "\nNo. of Students - "+ this.numStudents;
-    }
+    public void setInstructorName(String instructorName) { this.instructorName = instructorName; }
 }

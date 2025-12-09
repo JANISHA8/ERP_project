@@ -1,8 +1,14 @@
 package edu.univ.erp.ui.student;
 
 import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+
+import edu.univ.erp.api.student.StudentAPI;
+import edu.univ.erp.domain.Course;
 
 public class StudentCoursesPanel extends JPanel
 {
@@ -18,15 +24,47 @@ public class StudentCoursesPanel extends JPanel
         add(title, BorderLayout.NORTH);
 
         String[] cols = {"Course Code", "Course Name", "Credits", "Instructor"};
-        DefaultTableModel model = new DefaultTableModel(cols, 0);
+        DefaultTableModel model = new DefaultTableModel(cols, 0)
+        {
+            @Override
+            public boolean isCellEditable(int row, int column)
+            {
+                return false; // STUDENT CANNOT EDIT ANYTHING
+            }
+        };
 
         JTable table = new JTable(model);
         table.setRowHeight(25);
 
-        model.addRow(new Object[]{"CSE101", "Programming", 4, "Dr. Sharma"});
-        model.addRow(new Object[]{"PHY102", "Physics", 3, "Dr. Lee"});
-        model.addRow(new Object[]{"MAT201", "Calculus", 4, "Dr. Patel"});
+        table.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e)
+            {
+                if (e.getClickCount() == 2) // double click
+                {
+                    JOptionPane.showMessageDialog(
+                        StudentCoursesPanel.this,
+                        "You are not allowed to modify course information.",
+                        "Access Denied",
+                        JOptionPane.WARNING_MESSAGE
+                    );
+                }
+            }
+        });
 
+        StudentAPI api = new StudentAPI();
+        List<Course> courses = api.getMyCourses();
+
+        for (Course c : courses)
+        {
+            model.addRow(new Object[]{
+                    c.getCode(),
+                    c.getTitle(),
+                    c.getCredits(),
+                    c.getInstructorName()
+            });
+        }
         add(new JScrollPane(table), BorderLayout.CENTER);
     }
 }

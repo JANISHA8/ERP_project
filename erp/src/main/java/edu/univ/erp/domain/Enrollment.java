@@ -23,11 +23,4 @@ public class Enrollment
     public void setStudent_id(String student_id) { this.student_id = student_id; }
     public void setSection_id(String section_id) { this.section_id = section_id; }
     public void setStatus(String status) { this.status = status; }
-
-    @Override public String toString()
-    {
-        return "ENROLLMENT:\nStudent ID - " + this.student_id +
-        "\nSection ID - " + this.section_id +
-        "\nStatus - " + this.status;
-    }
 }

@@ -10,20 +10,45 @@ public class LoginAPI
 
     public User login(String email, String password, String role)
     {
-        // String hashedPassword = hashPassword(password);
-        boolean valid = auth.checkUser(email, password, role);
-        if (!valid)
-        { return null; }
-
         User user = auth.getUserByEmail(email);
-        if (user != null)
+
+        if (user == null)
         {
-            SessionInfo.start(
+            System.out.println("User not found");
+            return null;
+        }
+
+        if (!user.getRole().name().equalsIgnoreCase(role))
+        {
+            System.out.println("Role mismatch");
+            return null;
+        }
+        int userId = user.getUserID();
+
+        if (auth.isUserBlocked(userId))
+        {
+            System.out.println("User blocked due to too many wrong attempts");
+            return null;
+        }
+
+        boolean ok = auth.verifyPassword(userId, password);
+
+        if (!ok)
+        {
+            auth.recordFailedAttempt(userId);
+            System.out.println("Incorrect password");
+            return null;
+        }
+        auth.resetAttempts(userId);
+
+        SessionInfo.start
+        (
                 user.getUserID(),
                 user.getUsername(),
                 user.getEmailID(),
-                user.getRole());
-        }
+                user.getRole()
+        );
+
         return user;
     }
 }

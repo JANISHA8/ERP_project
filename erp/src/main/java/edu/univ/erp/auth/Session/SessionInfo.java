@@ -20,11 +20,16 @@ public class SessionInfo
         email = mail;
         role = r;
         loginTime = LocalDateTime.now();
+
+        new SessionData().updateLoginStatus(id, true, loginTime);
     }
 
-    // END SESSION (Logout)
+    // END SESSION
     public static void end()
     {
+        if(userID != -1)
+            new SessionData().updateLoginStatus(userID, false, null);
+
         userID = -1;
         username = null;
         email = null;
@@ -34,41 +39,26 @@ public class SessionInfo
 
     // SESSION CHECK
     public static boolean isLoggedIn()
-    {
-        return userID != -1 && role != null;
-    }
+    { return userID != -1 && role != null; }
 
     // GETTERS
-    public static int getUserID()
-    {
-        return userID;
-    }
+    public static int getUserID() { return userID; }
+    public static String getUsername() { return username; }
+    public static String getEmail() { return email; }
+    public static Role getRole() { return role; }
+    public static LocalDateTime getLoginTime() { return loginTime; }
 
-    public static String getUsername()
-    {
-        return username;
-    }
+    // SETTERS
+    public void setUserID(int userID) { SessionInfo.userID = userID; }
+    public void setUsername(String username) { SessionInfo.username = username; }
+    public void setEmail(String email) { SessionInfo.email = email; }
+    public void setRole(Role role) { SessionInfo.role = role; }
+    public void setLoginTime(LocalDateTime loginTime) { SessionInfo.loginTime = loginTime; }
 
-    public static String getEmail()
-    {
-        return email;
-    }
-
-    public static Role getRole()
-    {
-        return role;
-    }
-
-    public static LocalDateTime getLoginTime()
-    {
-        return loginTime;
-    }
-
-    // PRINT SESSION (For debugging / logs)
+    // PRINT SESSION
     public static String getInfo()
     {
-        if(!isLoggedIn())
-            return "No Active Session";
+        if(!isLoggedIn()) { return "No Active Session"; }
 
         return "Session Info:" +
                 "\nUser ID : " + userID +

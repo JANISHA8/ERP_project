@@ -1,28 +1,27 @@
 package edu.univ.erp.access;
 
 import edu.univ.erp.domain.Role;
-import edu.univ.erp.domain.Task; // for getting to know the task (service) being performed
-import edu.univ.erp.auth.session.SessionInfo; // for getting current user role
+import edu.univ.erp.domain.Task;
 
 public class Allowed
 {
-    // static keyword is used so that we do not need to create an object of Allowed class
-    public static boolean can_operate_rs(SessionInfo session, Task task) // acc to user specific services
+    public static boolean can_operate_rs(Role role, Task task)
     {
-        Role role = session.getRole();
+        if (role == null) return false;
+
         switch (role)
         {
-            // update when more tasks are added
             case ADMIN:
-                return true; // ADMIN can perform all tasks
+                return true;
+
             case INSTRUCTOR:
-                return task==Task.LOGIN || task==Task.SIGNUP || task==Task.ENTER_SCORES || task==Task.COMPUTE_FINAL
-                                        || task==Task.SEE_MY_SECTIONS || task==Task.SEE_CLASS_STATS;
+                return task==Task.UPDATE_PROFILE || task==Task.LOGIN || task==Task.ENTER_SCORES || task==Task.COMPUTE_FINAL || task==Task.SEE_MY_SECTIONS || task==Task.SEE_CLASS_STATS;
+
             case STUDENT:
-                return task==Task.LOGIN || task==Task.SIGNUP || task==Task.DROP_COURSES || task==Task.REGISTER_FOR_COURSES
-                                        || task==Task.VIEW_TIMETABLE || task==Task.VIEW_GRADES || task==Task.DOWNLOAD_TRANSCRIPT; // not always; need to put more conditions
+                return task==Task.UPDATE_PROFILE || task==Task.LOGIN || task==Task.DROP_COURSES || task==Task.REGISTER_FOR_COURSES || task==Task.VIEW_TIMETABLE || task==Task.VIEW_GRADES;
+
             default:
-                return false; // or error message
+                return false;
         }
     }
 }

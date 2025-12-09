@@ -1,23 +1,16 @@
 package edu.univ.erp.service;
 
 import edu.univ.erp.access.Allowed;
-import edu.univ.erp.access.MaintenanceMode;
-import edu.univ.erp.auth.session.SessionInfo;
 import edu.univ.erp.domain.Task;
+import edu.univ.erp.domain.Role;
 import edu.univ.erp.data.SettingsData;
 
 public class ToggleMaintenance
 {
-    public void toggleMaintenance(SessionInfo session, Task task, SettingsData settings)
+    public boolean toggle(int adminId, Task task, boolean status)
     {
-        boolean allowed = Allowed.can_operate_rs(session, task) && MaintenanceMode.can_operate_mm(session, settings);
-        if (allowed)
-        {
-            // perform this task
-        }
-        else
-        {
-            // print error message
-        }
+        if(!Allowed.can_operate_rs(Role.ADMIN, task)) { return false; }
+        SettingsData data = new SettingsData();
+        return data.updateSetting("Maintenance_Mode", String.valueOf(status));
     }
 }

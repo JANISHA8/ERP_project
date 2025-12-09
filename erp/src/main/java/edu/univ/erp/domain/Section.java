@@ -19,29 +19,23 @@ public class Section
         }
 
         // getters
-        public String getDay()
-        { return day; }
-        public LocalTime getStartTime()
-        { return startTime; }
-        public Duration getDuration()
-        { return duration; }
+        public String getDay() { return day; }
+        public LocalTime getStartTime() { return startTime; }
+        public Duration getDuration() { return duration; }
 
         // setters
-        public void setDay(String day)
-        { this.day = day; }
-        public void setStartTime(LocalTime startTime)
-        { this.startTime = startTime; }
-        public void setDuration(Duration duration)
-        { this.duration = duration; }
+        public void setDay(String day) { this.day = day; }
+        public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+        public void setDuration(Duration duration) { this.duration = duration; }
     }
 
-    private String course_id; // course code
-    private String instructor_id; // instructor's user_id
-    private Day_Time day_time; // <day, start_time, duration>
+    private String course_id;
+    private String instructor_id;
+    private Day_Time day_time;
     private String room;
     private int capacity;
-    private int semester; // monsoon, winter, summer
-    private int year; // 2025, 2026
+    private int semester;
+    private int year;
 
     // constructor
     public Section(String course_id, String instructor_id, Day_Time day_time, String room, int capacity, int semester, int year)
@@ -72,17 +66,4 @@ public class Section
     public void setCapacity(int capacity) { this.capacity = capacity; }
     public void setSemester(int semester) { this.semester = semester; }
     public void setYear(int year) { this.year = year;}
-
-    @Override public String toString()
-    {
-        return "SECTION:\nCourse ID - " + this.course_id +
-        "\nInstructor ID - " + this.instructor_id +
-        "\nDay - " + this.day_time.getDay() +
-        "\nStart Time - " + this.day_time.getStartTime().toString() +
-        "\nDuration - " + this.day_time.getDuration().toString() +
-        "\nRoom - " + this.room +
-        "\nCapacity - " + this.capacity +
-        "\nSemester - " + this.semester +
-        "\nYear - " + this.year;
-    }
 }

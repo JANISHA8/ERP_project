@@ -16,7 +16,7 @@ public class Student extends User
     private int current_year;
     private int current_sem;
     private int graduation_year;
-    private List<Course> courses; //sem wise courses
+    private List<Course> courses;
 
     // constructor
     public Student(int userID, String username, String EmailID, String passwordHash, String status, LocalDateTime lastLogin,
@@ -63,37 +63,4 @@ public class Student extends User
     public void setCurrent_sem(int current_sem) { this.current_sem = current_sem; }
     public void setGraduation_year(int graduation_year) { this.graduation_year = graduation_year; }
     public void setCourses(List<Course> courses) { this.courses = courses; }
-
-    ////////////////////////////////////////////////////////////////////
-    //////////////// REMOVE THIS IF IT IS NOT USED /////////////////////
-    @Override public boolean equals(Object o)
-    {
-        if (this == o) {  return true;}
-        if (o == null || getClass() != o.getClass()) { return false; }
-        Student student = (Student) o;
-        return this.getUserID() == student.getUserID();
-    }
-    ////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////
-
-    @Override public int hashCode() // to ensure admins with same user_id are treated as duplicates; required in HashSet and HashMaps
-    { return Integer.hashCode(this.getUserID()); }
-
-    @Override public String toString()
-    {
-        return "STUDENT:\nUser ID - " + this.getUserID() +
-        "\nRoll No. - " + this.rollNO +
-        "\nName - " + this.getUsername() +
-        "\nGender - " + this.gender +
-        "\nContact No. - " + this.contact_no +
-        "\nDOB - " + this.dob +
-        "\nNationality - " + this.nationality +
-        "\nEmail ID - " + this.getEmailID() +
-        "\nProgram - " + this.program +
-        "\nBranch - " + this.branch +
-        "\nCurrent Year - " + this.current_year +
-        "\nCurrent Sem - " + this.current_sem +
-        "\nGraduation Year - " + this.graduation_year +
-        "\nCourses - " + this.courses;
-    }
 }

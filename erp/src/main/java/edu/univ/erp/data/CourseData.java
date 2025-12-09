@@ -1,6 +1,5 @@
 package edu.univ.erp.data;
 
-import edu.univ.erp.auth.hash.AuthDB;
 import edu.univ.erp.domain.Course;
 
 import java.sql.Connection;
@@ -11,111 +10,177 @@ import java.util.List;
 
 public class CourseData
 {
-    // In-memory storage for courses
-    private List<Course> courses;
-
-    // Constructor
-    public CourseData()
-    { courses = new ArrayList<>(); }
-
-    // Add a new course
-    public void addCourse(Course course)
-    { courses.add(course); }
-
-    // Get course by code
-    public Course getCourseByCode(String code)
+    public boolean createCourse(Course c)
     {
-        for (Course c : courses)
+        String sql = "INSERT INTO erp_db.courses " +
+                    "(code,title,credits,type,max_students,num_students,instructor_name) " +
+                    "VALUES (?,?,?,?,?,?,?)";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
         {
-            if (c.getCode().equals(code))
-            { return c; }
+            ps.setString(1, c.getCode());
+            ps.setString(2, c.getTitle());
+            ps.setInt(3, c.getCredits());
+            ps.setString(4, c.getType());
+            ps.setInt(5, c.getMaxStudents());
+            ps.setInt(6, c.getNumStudents());
+            ps.setString(7, c.getInstructorName());
+
+            return ps.executeUpdate() > 0;
         }
-        return null; // not found
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    // Get all courses
+    // GET ALL COURSES FROM DB
     public List<Course> getAllCourses()
-    { return new ArrayList<>(courses); } // return a copy
+    {
+        List<Course> list = new ArrayList<>();
+        String sql = "SELECT * FROM courses";
+        try (Connection conn = ERPDB.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery())
+        {
+            while (rs.next())
+            {
+                String code = rs.getString("code");
+                int enrolled = getEnrolledStudentsCount(code);
+                Course c = new Course(code,
+                        rs.getString("title"),
+                        rs.getInt("credits"),
+                        rs.getString("type"),
+                        rs.getInt("max_students"),
+                        enrolled,
+                        rs.getString("instructor_name"));
+                list.add(c);
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
 
     // Get courseID by courseCode
-    public static Integer getCourseIdByCode(String code)
+    public static String getCourseIdByCode(String code)
     {
-        String sql = "SELECT course_id FROM courses WHERE code = ?";
+        String sql = "SELECT code FROM erp_db.courses WHERE code = ?";
 
         try (Connection con = ERPDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql))
         {
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
-            if (rs.next())
-                { return rs.getInt("course_id"); }
+            if (rs.next()) { return rs.getString("code"); }
             return null;
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
             return null;
         }
     }
 
-    // Update a course
-    public boolean updateCourse(Course updatedCourse)
+    // UPDATE COURSE
+    public boolean updateCourse(Course c)
     {
-        for (int i = 0; i < courses.size(); i++)
+        String sql = "UPDATE erp_db.courses " +
+                    "SET title=?, credits=?, type=?, max_students=?, num_students=?, instructor_name=? " +
+                    "WHERE code=?";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
         {
-            Course c = courses.get(i);
-            if (c.getCode().equals(updatedCourse.getCode()))
-            {
-                courses.set(i, updatedCourse);
-                return true; // updated successfully
-            }
+            ps.setString(1, c.getTitle());
+            ps.setInt(2, c.getCredits());
+            ps.setString(3, c.getType());
+            ps.setInt(4, c.getMaxStudents());
+            ps.setInt(5, c.getNumStudents());
+            ps.setString(6, c.getInstructorName());
+            ps.setString(7, c.getCode());
+
+            return ps.executeUpdate() > 0;
         }
-        return false; // not found
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Delete a course by code
     public boolean deleteCourse(String code)
-    { return courses.removeIf(c -> c.getCode().equals(code)); }
-
-    // Increment number of students enrolled
-    public boolean incrementNumStudents(String code, int count)
     {
-        Course c = getCourseByCode(code);
-        if (c != null)
+        String sql = "DELETE FROM erp_db.courses WHERE code=?";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
         {
-            c.setNumStudents(c.getNumStudents() + count);
-            return true;
+            ps.setString(1, code);
+            return ps.executeUpdate() > 0;
         }
-        return false;
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Register Student
-    public static boolean registerStudent(int studentId, int courseId)
+    public static boolean registerStudent(int studentId, String courseCode)
     {
-        String check = "SELECT * FROM student_courses WHERE student_id=? AND course_id=?";
-        String sql = "INSERT INTO student_courses(student_id, course_id) VALUES (?, ?)";
+        String check = "SELECT * FROM erp_db.student_courses WHERE student_id=? AND course_code=?";
+        String seatCheck = "SELECT max_students, num_students FROM erp_db.courses WHERE code=?";
+        String insert = "INSERT INTO erp_db.student_courses(student_id, course_code) VALUES (?, ?)";
+        String updateSeats = "UPDATE erp_db.courses SET num_students = num_students + 1 WHERE code=?";
 
-        try (Connection con = AuthDB.getConnection())
+        try (Connection con = ERPDB.getConnection())
         {
-            // check if already registered
+            // Check already enrolled
             PreparedStatement pst = con.prepareStatement(check);
             pst.setInt(1, studentId);
-            pst.setInt(2, courseId);
-
+            pst.setString(2, courseCode);
             ResultSet rs = pst.executeQuery();
+
             if (rs.next())
             {
-                System.out.println("Student already registered for this course.");
+                System.out.println("Already registered.");
                 return false;
             }
 
-            // insert if not exists
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, studentId);
-            ps.setInt(2, courseId);
+            // Check seats available
+            PreparedStatement seatPS = con.prepareStatement(seatCheck);
+            seatPS.setString(1, courseCode);
+            ResultSet seatRS = seatPS.executeQuery();
 
-            return ps.executeUpdate() > 0;
+            if (!seatRS.next())
+            {
+                System.out.println("Course does not exist");
+                return false;
+            }
 
-        } catch (Exception e)
+            int max = seatRS.getInt("max_students");
+            int current = seatRS.getInt("num_students");
+
+            if ((max - current) <= 0)
+            {
+                System.out.println("No seats available");
+                return false;
+            }
+
+            PreparedStatement insertPS = con.prepareStatement(insert);
+            insertPS.setInt(1, studentId);
+            insertPS.setString(2, courseCode);
+            if (insertPS.executeUpdate() == 0) return false;
+
+            PreparedStatement updatePS = con.prepareStatement(updateSeats);
+            updatePS.setString(1, courseCode);
+            updatePS.executeUpdate();
+            return true;
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
             return false;
@@ -123,35 +188,125 @@ public class CourseData
     }
 
     // Drop Student
-    public static boolean dropStudent(int studentId, int courseId)
+    public static boolean dropStudent(int studentId, String courseCode)
     {
-        String sql = "DELETE FROM student_courses WHERE student_id=? AND course_id=?";
+        String check = "SELECT * FROM erp_db.student_courses WHERE student_id=? AND course_code=?";
+        String delete = "DELETE FROM erp_db.student_courses WHERE student_id=? AND course_code=?";
+        String updateSeats = "UPDATE erp_db.courses SET num_students = num_students - 1 WHERE code=? AND num_students > 0";
 
-        try (Connection con = AuthDB.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql))
+        try (Connection con = ERPDB.getConnection())
         {
-            ps.setInt(1, studentId);
-            ps.setInt(2, courseId);
+            PreparedStatement pst = con.prepareStatement(check);
+            pst.setInt(1, studentId);
+            pst.setString(2, courseCode);
+            ResultSet rs = pst.executeQuery();
 
-            return ps.executeUpdate() > 0;
+            if (!rs.next())
+            {
+                System.out.println("Student is NOT registered in this course");
+                return false;
+            }
 
-        } catch (Exception e)
+            PreparedStatement deletePS = con.prepareStatement(delete);
+            deletePS.setInt(1, studentId);
+            deletePS.setString(2, courseCode);
+
+            if(deletePS.executeUpdate() == 0) { return false; }
+
+            PreparedStatement updatePS = con.prepareStatement(updateSeats);
+            updatePS.setString(1, courseCode);
+            updatePS.executeUpdate();
+            return true;
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
             return false;
         }
     }
 
-    // Decrement number of students enrolled
-    public boolean decrementNumStudents(String code, int count)
+    // GET ALL COURSES FOR A STUDENT
+    public List<Course> getCoursesForStudent(int studentId)
     {
-        Course c = getCourseByCode(code);
-        if (c != null)
+        List<Course> list = new ArrayList<>();
+        String sql = "SELECT c.code, c.title, c.credits, c.type, " +
+                    "c.max_students, c.num_students, c.instructor_name " +
+                    "FROM erp_db.student_courses sc " +
+                    "JOIN erp_db.courses c ON sc.course_code = c.code " +
+                    "WHERE sc.student_id = ?";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
         {
-            int newCount = c.getNumStudents() - count;
-            c.setNumStudents(Math.max(newCount, 0)); // avoid negative
-            return true;
+            ps.setInt(1, studentId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                Course c = new Course( rs.getString("code"),
+                                        rs.getString("title"),
+                                        rs.getInt("credits"),
+                                        rs.getString("type"),
+                                        rs.getInt("max_students"),
+                                        rs.getInt("num_students"),
+                                        rs.getString("instructor_name"));
+                list.add(c);
+            }
         }
+        catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+
+    public boolean isCourseOfInstructor(String courseCode, int userId)
+    {
+        String sql = "SELECT COUNT(*) FROM erp_db.courses c " +
+                    "JOIN auth_db.users_auth u ON c.instructor_name = u.username " +
+                    "WHERE c.code = ? AND u.user_id = ?";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, courseCode);
+            ps.setInt(2, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) { return rs.getInt(1) > 0; }
+        }
+        catch (Exception e) { e.printStackTrace(); }
         return false;
+    }
+
+    public boolean areStudentsEnrolled(String courseCode)
+    {
+        String sql = "SELECT COUNT(*) FROM student_courses WHERE course_code=?";
+
+        try (Connection conn = ERPDB.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql))
+        {
+            ps.setString(1, courseCode);
+
+            try (ResultSet rs = ps.executeQuery())
+            {
+                if (rs.next()) { return rs.getInt(1) > 0; }
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return false;
+    }
+
+    // GET NUMBER OF STUDENTS ENROLLED IN A COURSE
+    public int getEnrolledStudentsCount(String courseCode)
+    {
+        String sql = "SELECT COUNT(*) FROM student_courses WHERE course_code = ?";
+
+        try (Connection conn = ERPDB.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql))
+        {
+            ps.setString(1, courseCode);
+
+            try (ResultSet rs = ps.executeQuery())
+            {
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0;
     }
 }

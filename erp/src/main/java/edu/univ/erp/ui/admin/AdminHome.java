@@ -16,11 +16,9 @@ public class AdminHome extends JPanel
 
         add(title, BorderLayout.NORTH);
 
-        // Cards panel
         JPanel cardsPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         cardsPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
         cardsPanel.setBackground(Color.WHITE);
-
         cardsPanel.add(createCard("Total Users", "120"));
         cardsPanel.add(createCard("Total Courses", "35"));
         cardsPanel.add(createCard("Active Students", "87"));

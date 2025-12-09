@@ -1,70 +1,161 @@
 package edu.univ.erp.data;
 
 import edu.univ.erp.domain.Grade;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GradesData
 {
-    // In-memory storage for grades
-    private List<Grade> grades;
-
-    // Constructor
-    public GradesData()
-    { grades = new ArrayList<>(); }
-
-    // Add a new grade
-    public void addGrade(Grade grade)
-    { grades.add(grade); }
-
-    // Get grade by enrollment ID and component
-    public Grade getGrade(String enrollmentId, String component)
+    // GET ALL GRADES FOR ONE ENROLLMENT
+    public List<Grade> getGradesByEnrollmentId(int enrollmentId)
     {
-        for (Grade g : grades)
-        {
-            if (g.getEnrollment_id().equals(enrollmentId) &&
-                g.getComponent().equals(component))
-            { return g; }
-        }
-        return null; // not found
-    }
+        List<Grade> list = new ArrayList<>();
+        String sql = "SELECT enrollment_id, course_code, component, score, final_grade " +
+                    "FROM erp_db.student_grades WHERE enrollment_id = ?";
 
-    // Get all grades for a specific enrollment
-    public List<Grade> getGradesByEnrollment(String enrollmentId)
-    {
-        List<Grade> result = new ArrayList<>();
-        for (Grade g : grades)
+        try (Connection con = ERPDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql))
         {
-            if (g.getEnrollment_id().equals(enrollmentId))
-            { result.add(g); }
-        }
-        return result;
-    }
-
-    // Get all grades
-    public List<Grade> getAllGrades()
-    { return new ArrayList<>(grades); } // return a copy
-
-    // Update a grade
-    public boolean updateGrade(Grade updatedGrade)
-    {
-        for (int i = 0; i < grades.size(); i++)
-        {
-            Grade g = grades.get(i);
-            if (g.getEnrollment_id().equals(updatedGrade.getEnrollment_id()) &&
-                g.getComponent().equals(updatedGrade.getComponent()))
+            ps.setInt(1, enrollmentId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
             {
-                grades.set(i, updatedGrade);
-                return true; // updated successfully
+                list.add(new Grade( rs.getInt("enrollment_id"),
+                                    rs.getString("course_code"),
+                                    rs.getString("component"),
+                                    rs.getDouble("score"),
+                                    rs.getString("final_grade")));
             }
         }
-        return false; // not found
+        catch (Exception e)
+        { e.printStackTrace(); }
+        return list;
     }
 
-    // Delete a grade
-    public boolean deleteGrade(String enrollmentId, String component)
+    // SAVE / UPDATE SCORE
+    public boolean saveScore(int enrollmentId, String courseCode, String component, double marks)
     {
-        return grades.removeIf(g -> g.getEnrollment_id().equals(enrollmentId) &&
-                                    g.getComponent().equals(component));
+        String sql = "INSERT INTO erp_db.student_grades (enrollment_id, course_code, component, score) " +
+                    "VALUES (?, ?, ?, ?) " +
+                    "ON DUPLICATE KEY UPDATE score = VALUES(score)";
+
+        try (Connection conn = ERPDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql))
+        {
+            ps.setInt(1, enrollmentId);
+            ps.setString(2, courseCode);
+            ps.setString(3, component);
+            ps.setDouble(4, marks);
+            return ps.executeUpdate() > 0;
+        }
+        catch (SQLException e)
+        { e.printStackTrace(); }
+        return false;
+    }
+
+    // GET ALL STUDENTS ENROLLED IN A COURSE
+    public List<Integer> getEnrollmentsForCourse(String courseCode)
+    {
+        List<Integer> list = new ArrayList<>();
+        String sql = "SELECT enrollment_id FROM erp_db.student_courses WHERE code=?";
+        try (Connection con = ERPDB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, courseCode);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            { list.add(rs.getInt("enrollment_id")); }
+        }
+        catch(Exception e) { e.printStackTrace(); }
+        return list;
+    }
+
+    // UPDATE FINAL GRADE IN DATABASE
+    public boolean updateFinalGrade(int enrollmentId, String courseCode, String finalGrade)
+    {
+        String sql = "UPDATE erp_db.student_grades " +
+                    "SET final_grade = ? " +
+                    "WHERE enrollment_id = ? AND course_code = ?";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, finalGrade);
+            ps.setInt(2, enrollmentId);
+            ps.setString(3, courseCode);
+            return ps.executeUpdate() > 0;
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        return false;
+    }
+
+    // Average final grade
+    public double getCourseAverage(String courseCode)
+    {
+        String sql = "SELECT AVG(score) FROM erp_db.student_grades " +
+                    "WHERE course_code = ? AND component = 'FINAL'";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, courseCode);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) { return rs.getDouble(1); }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
+
+    // Highest score
+    public double getHighestScore(String courseCode)
+    {
+        String sql = "SELECT MAX(score) FROM erp_db.student_grades " +
+                    "WHERE course_code = ? AND component = 'FINAL'";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, courseCode);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) { return rs.getDouble(1); }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
+
+    // Lowest score
+    public double getLowestScore(String courseCode)
+    {
+        String sql = "SELECT MIN(score) FROM erp_db.student_grades " +
+                    "WHERE course_code = ? AND component = 'FINAL'";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, courseCode);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) { return rs.getDouble(1); }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
+
+    // Student count
+    public int getStudentCount(String courseCode)
+    {
+        String sql = "SELECT COUNT(DISTINCT enrollment_id) " +
+                    "FROM erp_db.student_courses WHERE code = ?";
+
+        try (Connection con = ERPDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, courseCode);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) { return rs.getInt(1); }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        return 0;
     }
 }

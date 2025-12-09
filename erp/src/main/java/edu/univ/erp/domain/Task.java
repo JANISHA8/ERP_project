@@ -2,14 +2,16 @@ package edu.univ.erp.domain;
 
 public enum Task
 {
-    SIGNUP,
     LOGIN,
+    VIEW_COURSE,
     ADD_USER,
     DELETE_USER,
     CREATE_COURSE,
-    EDIT_COURSE,
+    UPDATE_COURSE,
+    DELETE_COURSE,
     CREATE_SECTION,
-    EDIT_SECTION,
+    UPDATE_SECTION,
+    DELETE_SECTION,
     ASSIGN_INSTRUCTOR,
     TOGGLE_MAINTENANCE,
     COMPUTE_FINAL,
@@ -20,6 +22,5 @@ public enum Task
     REGISTER_FOR_COURSES,
     VIEW_TIMETABLE,
     VIEW_GRADES,
-    DOWNLOAD_TRANSCRIPT,
-    // add more
+    UPDATE_PROFILE,
 }

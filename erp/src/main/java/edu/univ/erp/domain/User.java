@@ -9,7 +9,7 @@ public class User {
     private Role role;
     private String emailID;
     private String passwordHash;
-    private String status; // actice, inactive, suspended
+    private String status;
     private LocalDateTime lastLogin;
 
     public User(int UserId, String username, Role role, String EmailID, String passwordHash, String status, LocalDateTime LastLogin)

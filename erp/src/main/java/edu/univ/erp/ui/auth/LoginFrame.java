@@ -4,10 +4,19 @@ import javax.swing.*;
 import java.awt.*;
 
 import edu.univ.erp.api.auth.LoginAPI;
+import edu.univ.erp.api.admin.AdminAPI;
+import edu.univ.erp.api.instructor.InstructorAPI;
+import edu.univ.erp.api.student.StudentAPI;
+import edu.univ.erp.auth.session.SessionInfo;
 import edu.univ.erp.domain.User;
+import edu.univ.erp.domain.Admin;
+import edu.univ.erp.domain.Student;
+import edu.univ.erp.domain.Instructor;
+import edu.univ.erp.domain.Role;
 import edu.univ.erp.ui.student.StudentDashboard;
 import edu.univ.erp.ui.instructor.InstructorDashboard;
 import edu.univ.erp.ui.admin.AdminDashboard;
+import edu.univ.erp.auth.hash.UserAuth;
 
 public class LoginFrame extends JFrame
 {
@@ -154,18 +163,6 @@ public class LoginFrame extends JFrame
         loginPanel.add(space2, gbc);
 
         gbc.gridwidth = 2;
-        /*-----------------------------------------------------
-        // Signup Button
-        JButton SignupB = new JButton("CANCEL");
-        SignupB.setForeground(Color.WHITE);
-        SignupB.setBackground(new Color(90, 90, 90));
-        SignupB.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        gbc.gridx = 0;
-        gbc.gridy = 8;
-        gbc.anchor = GridBagConstraints.CENTRE;
-        gbc.fill = GridBagConstraints.NONE;
-        loginPanel.add(SignupB, gbc);
-        --------------------------------------------------------*/
 
         // Login Button
         JButton LoginB = new JButton("LOGIN");
@@ -181,8 +178,9 @@ public class LoginFrame extends JFrame
 
         LoginAPI api = new LoginAPI();
 
-        LoginB.addActionListener(e -> {
-
+        LoginB.addActionListener(e ->
+        {
+            UserAuth auth = new UserAuth();
             String email = EmailIDEntered.getText();
             String password = new String(PasswordEntered.getText().trim());
             String role = RoleDropdown.getSelectedItem().toString();
@@ -194,16 +192,29 @@ public class LoginFrame extends JFrame
                 dispose(); // Close login window
                 String username = user.getUsername();
 
-                switch (role) {
+                switch (role)
+                {
                     case "ADMIN":
+                        AdminAPI aapi = new AdminAPI();
+                        Admin admin = aapi.getAdminByEmail(email);
+                        auth.updateStatus(admin.getUserID(), "ONLINE");
+                        SessionInfo.start(admin.getUserID(), admin.getUsername(), email, Role.ADMIN);
                         new AdminDashboard(username).setVisible(true);
                         break;
 
                     case "STUDENT":
+                        StudentAPI sapi = new StudentAPI();
+                        Student student = sapi.getStudentByEmail(email);
+                        auth.updateStatus(student.getUserID(), "ONLINE");
+                        SessionInfo.start(student.getUserID(), student.getUsername(), email, Role.STUDENT);
                         new StudentDashboard(username).setVisible(true);
                         break;
 
                     case "INSTRUCTOR":
+                        InstructorAPI iapi = new InstructorAPI();
+                        Instructor instructor = iapi.getInstructorByEmail(email);
+                        auth.updateStatus(instructor.getUserID(), "ONLINE");
+                        SessionInfo.start(instructor.getUserID(), instructor.getUsername(), email, Role.INSTRUCTOR);
                         new InstructorDashboard(username).setVisible(true);
                         break;
                 }
